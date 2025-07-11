@@ -21,10 +21,9 @@ import { ListItemComponent } from '../list-item/list-item.component';
 
       <section>
         @for (item of list(); track item) {
-          <app-list-item
-            [name]="item.firstName"
-            [id]="item.id"
-            [type]="type()"></app-list-item>
+          <app-list-item (delete)="deleteItem(item.id)">
+            <div> {{ item.firstName }}</div>
+          </app-list-item>
         }
       </section>
 
@@ -53,6 +52,15 @@ export class CardComponent {
       this.teacherStore.addOne(randTeacher());
     } else if (type === CardType.STUDENT) {
       this.studentStore.addOne(randStudent());
+    }
+  }
+
+  deleteItem(id: number){
+    const type = this.type();
+    if (type === CardType.TEACHER) {
+      this.teacherStore.deleteOne(id);
+    } else if (type === CardType.STUDENT) {
+      this.studentStore.deleteOne(id);
     }
   }
 }
