@@ -1,9 +1,10 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, ContentChild, inject, input, TemplateRef, ViewChild } from '@angular/core';
 import { randStudent, randTeacher } from '../../data-access/fake-http.service';
 import { StudentStore } from '../../data-access/student.store';
 import { TeacherStore } from '../../data-access/teacher.store';
 import { CardType } from '../../model/card.model';
 import { ListItemComponent } from '../list-item/list-item.component';
+import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'app-card',
@@ -13,10 +14,10 @@ import { ListItemComponent } from '../list-item/list-item.component';
       [class]="customClass()">
         <ng-content select="img"></ng-content>
       <section>
-        @for (item of list(); track item) {
-          <app-list-item (delete)="deleteItem(item.id)">
-            <div> {{ item.firstName }}</div>
-          </app-list-item>
+        
+        @for (item of list(); track item.id) {
+          <ng-container *ngTemplateOutlet="rowTemplate; context: { $implicit: item }">
+          </ng-container>
         }
       </section>
 
@@ -27,11 +28,13 @@ import { ListItemComponent } from '../list-item/list-item.component';
       </button>
     </div>
   `,
-  imports: [ListItemComponent],
+  imports: [NgTemplateOutlet],
 })
 export class CardComponent {
   private teacherStore = inject(TeacherStore);
   private studentStore = inject(StudentStore);
+  @ContentChild('rowRef', { read: TemplateRef })
+  rowTemplate!: TemplateRef<{ $implicit: any }>;
 
   readonly list = input<any[] | null>(null);
   readonly type = input.required<CardType>();
