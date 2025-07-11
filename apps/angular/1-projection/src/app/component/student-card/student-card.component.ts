@@ -8,6 +8,7 @@ import { FakeHttpService } from '../../data-access/fake-http.service';
 import { StudentStore } from '../../data-access/student.store';
 import { CardType } from '../../model/card.model';
 import { CardComponent } from '../../ui/card/card.component';
+import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-student-card',
@@ -15,7 +16,9 @@ import { CardComponent } from '../../ui/card/card.component';
     <app-card
       [list]="students()"
       [type]="cardType"
-      customClass="bg-light-green" />
+      customClass="bg-light-green">      
+        <img ngSrc="assets/img/student.webp" width="200" height="200" priority />
+    </app-card>
   `,
   styles: [
     `
@@ -24,7 +27,7 @@ import { CardComponent } from '../../ui/card/card.component';
       }
     `,
   ],
-  imports: [CardComponent],
+  imports: [CardComponent, NgOptimizedImage],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StudentCardComponent implements OnInit {
