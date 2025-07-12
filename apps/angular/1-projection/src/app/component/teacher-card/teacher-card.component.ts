@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FakeHttpService } from '../../data-access/fake-http.service';
+import { FakeHttpService, randTeacher } from '../../data-access/fake-http.service';
 import { TeacherStore } from '../../data-access/teacher.store';
 import { CardType } from '../../model/card.model';
 import { CardComponent } from '../../ui/card/card.component';
@@ -12,7 +12,8 @@ import { ListItemComponent } from "../../ui/list-item/list-item.component";
     <app-card
       [list]="teachers()"
       [type]="cardType"
-      customClass="bg-light-red">
+      customClass="bg-light-red"
+      (addEvent)="addNewTeacher()">
         <img ngSrc="assets/img/teacher.png" width="200" height="200" priority />
         <ng-template #rowRef let-teacher>
           <app-list-item (delete)="deleteTeacher(teacher.id)">
@@ -43,5 +44,9 @@ export class TeacherCardComponent implements OnInit {
   
   deleteTeacher(id: number){
       this.store.deleteOne(id);
+  }
+
+  addNewTeacher(){
+    this.store.addOne(randTeacher());
   }
 }

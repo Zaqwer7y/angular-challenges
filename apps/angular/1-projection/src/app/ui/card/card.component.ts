@@ -1,9 +1,5 @@
-import { Component, ContentChild, inject, input, TemplateRef, ViewChild } from '@angular/core';
-import { randStudent, randTeacher } from '../../data-access/fake-http.service';
-import { StudentStore } from '../../data-access/student.store';
-import { TeacherStore } from '../../data-access/teacher.store';
+import { Component, ContentChild, inject, input, output, TemplateRef } from '@angular/core';
 import { CardType } from '../../model/card.model';
-import { ListItemComponent } from '../list-item/list-item.component';
 import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
@@ -23,7 +19,7 @@ import { NgTemplateOutlet } from '@angular/common';
 
       <button
         class="rounded-sm border border-blue-500 bg-blue-300 p-2"
-        (click)="addNewItem()">
+        (click)="addEvent.emit()">
         Add
       </button>
     </div>
@@ -31,32 +27,13 @@ import { NgTemplateOutlet } from '@angular/common';
   imports: [NgTemplateOutlet],
 })
 export class CardComponent {
-  private teacherStore = inject(TeacherStore);
-  private studentStore = inject(StudentStore);
   @ContentChild('rowRef', { read: TemplateRef })
   rowTemplate!: TemplateRef<{ $implicit: any }>;
 
   readonly list = input<any[] | null>(null);
   readonly type = input.required<CardType>();
   readonly customClass = input('');
+  addEvent = output();
 
   CardType = CardType;
-
-  addNewItem() {
-    const type = this.type();
-    if (type === CardType.TEACHER) {
-      this.teacherStore.addOne(randTeacher());
-    } else if (type === CardType.STUDENT) {
-      this.studentStore.addOne(randStudent());
-    }
-  }
-
-  deleteItem(id: number){
-    const type = this.type();
-    if (type === CardType.TEACHER) {
-      this.teacherStore.deleteOne(id);
-    } else if (type === CardType.STUDENT) {
-      this.studentStore.deleteOne(id);
-    }
-  }
 }
