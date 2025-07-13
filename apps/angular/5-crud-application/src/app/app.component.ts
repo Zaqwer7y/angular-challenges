@@ -1,6 +1,5 @@
 import { Component, Inject, inject, OnInit } from '@angular/core';
 import { Todo } from './models/todo';
-import { TodoRequest } from './models/todo-request';
 import { HttpService } from './services/http.service';
 
 @Component({
@@ -29,8 +28,8 @@ private http = inject(HttpService);
 
   update(todo: Todo) {
     this.http.update(todo)
-      .subscribe((todoUpdated: TodoRequest) => {
-        this.todos[todoUpdated.todo - 1] = { id: todoUpdated.todo, userId: todoUpdated.userId, title: todoUpdated.title, isCompleted: true};
+      .subscribe((todoUpdated: Todo) => {
+        this.todos[todoUpdated.id - 1] = { id: todoUpdated.id, userId: todoUpdated.userId, title: todoUpdated.title, isCompleted: true};
       });
   }
 }
