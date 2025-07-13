@@ -1,8 +1,7 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, inject, OnInit } from '@angular/core';
-import { randText } from '@ngneat/falso';
+import { Component, Inject, inject, OnInit } from '@angular/core';
 import { Todo } from './models/todo';
 import { TodoRequest } from './models/todo-request';
+import { HttpService } from './services/http.service';
 
 @Component({
   imports: [],
@@ -20,29 +19,16 @@ import { TodoRequest } from './models/todo-request';
   styles: [],
 })
 export class AppComponent implements OnInit {
-  private http = inject(HttpClient);
+private http = inject(HttpService);
 
   todos!: Todo[];
 
   ngOnInit(): void {
-    this.http
-      .get<Todo[]>('https://jsonplaceholder.typicode.com/todos')
-      .subscribe((todos) => {
-        this.todos = todos;
-      });
+    this.http.getTodos().subscribe(todos => this.todos = todos);
   }
 
   update(todo: Todo) {
-    this.http
-      .put<TodoRequest>(
-        `https://jsonplaceholder.typicode.com/todos/${todo.id}`,
-        JSON.stringify({todo: todo.id, title: randText(), userId: todo.userId}),
-        {
-          headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-          },
-        },
-      )
+    this.http.update(todo)
       .subscribe((todoUpdated: TodoRequest) => {
         this.todos[todoUpdated.todo - 1] = { id: todoUpdated.todo, userId: todoUpdated.userId, title: todoUpdated.title, isCompleted: true};
       });
