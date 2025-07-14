@@ -2,7 +2,6 @@ import { inject, Injectable, } from '@angular/core';
 import { Todo } from '../models/todo';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { TodoRequest } from '../models/todo-request';
 import { randText } from '@ngneat/falso';
 
 @Injectable({
@@ -17,9 +16,9 @@ export class HttpService {
       .get<Todo[]>('https://jsonplaceholder.typicode.com/todos');
   }
 
-  update(todo: Todo) : Observable<TodoRequest> {
+  update(todo: Todo) : Observable<Todo> {
     return this.http
-          .put<TodoRequest>(
+          .put<Todo>(
             `https://jsonplaceholder.typicode.com/todos/${todo.id}`,
             JSON.stringify({todo: todo.id, title: randText(), userId: todo.userId}),
             {
