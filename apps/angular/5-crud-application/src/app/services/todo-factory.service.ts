@@ -9,28 +9,35 @@ import { lastValueFrom } from 'rxjs';
 export class TodoFactoryService {
 httpService = inject(HttpService);
 public todos: WritableSignal<Map<number, Todo>> = signal<Map<number, Todo>>(new Map<number, Todo>());
+public isLoading = false;
 
 async initAll() {
+  this.isLoading = true;
   const list = await lastValueFrom(this.httpService.getTodos());
   const newMap = new Map<number, Todo>();
   for(const item of list){
     newMap.set(item.id, item);
   }
   this.todos.set(newMap);
+  this.isLoading = false;
 }
 
 async update(todo: Todo){
+  this.isLoading = true;
   const updatedTodo = await lastValueFrom(this.httpService.update(todo));
   const localTodos = new Map(this.todos());
   localTodos.set(todo.id, updatedTodo);
   this.todos.set(localTodos);
+  this.isLoading = false;
 }
 
 async delete(id: number){
+  this.isLoading = true;
   await lastValueFrom(this.httpService.delete(id));
   const localTodos = new Map(this.todos());
   localTodos.delete(id);
   this.todos.set(localTodos);
+  this.isLoading = false;
 }
 
 }
