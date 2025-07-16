@@ -1,7 +1,6 @@
 import { Component, inject, OnInit} from '@angular/core';
 import { TodoFactoryService } from './services/todo-factory.service';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-;
 import { TodoComponentComponent } from "./components/todo.component/todo.component.component";
 
 @Component({
