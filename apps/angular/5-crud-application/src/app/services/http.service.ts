@@ -28,4 +28,8 @@ export class HttpService {
             },
           )
   }
+
+  delete(id: number) : Observable<Todo>{
+    return this.http.delete<Todo>(`https://jsonplaceholder.typicode.com/posts/${id}`);
+  }
 }

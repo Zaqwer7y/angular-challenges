@@ -26,4 +26,11 @@ async update(todo: Todo){
   this.todos.set(localTodos);
 }
 
+async delete(id: number){
+  await lastValueFrom(this.httpService.delete(id));
+  const localTodos = new Map(this.todos());
+  localTodos.delete(id);
+  this.todos.set(localTodos);
+}
+
 }

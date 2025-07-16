@@ -10,6 +10,7 @@ import { randText } from '@ngneat/falso';
   <li>
     {{ this.todo().title }}
     <button (click)="this.update(todo())">Update</button>
+    <button (click)="this.delete(todo().id)">Delete</button>
   </li>
   `
 })
@@ -20,5 +21,9 @@ export class TodoComponentComponent {
     update(todo: Todo) {
       const newTodo: Todo = { id: todo.id, userId: todo.userId, title: randText(), isCompleted: false};
       this.factory.update(newTodo);
+    }
+
+    delete(id: number){
+      this.factory.delete(id);
     }
 }
