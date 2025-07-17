@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   effect,
   model,
 } from '@angular/core';
@@ -38,25 +39,18 @@ export class AppComponent {
   drive = model(false);
   ram = model(false);
   gpu = model(false);
+  private previouslyCheckedItems = 0;
+  private checkedItems = computed<number>(() => 
+    {      
+      return +this.drive() + +this.ram() + +this.gpu();
+    });
 
   constructor() {
-    /* 
-      Explain for your junior team mate why this bug occurs ...
-    */
     effect(() => {
-      if (this.drive()) {
-        alert('Price increased!');
-      }
-    });
-    effect(() => {
-      if (this.ram()) {
-        alert('Price increased!');
-      }
-    });
-    effect(() => {
-      if (this.gpu()) {
-        alert('Price increased!');
-      }
-    });
+        const checkedItems = this.checkedItems();
+        if(checkedItems > this.previouslyCheckedItems)
+          alert('Price increased!');
+        this.previouslyCheckedItems = checkedItems;
+      });
   }
 }
