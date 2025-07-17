@@ -34,7 +34,7 @@ export class HttpService {
     .pipe(catchError(x => this.handleError(x)));
   }
 
-  handleError(error: HttpErrorResponse) : Observable<any>{
+  handleError(error: HttpErrorResponse){
     console.log(error);
     alert(error.error);
     return throwError(() => error);
