@@ -7,19 +7,18 @@ import { TodoComponentComponent } from "./components/todo.component/todo.compone
   imports: [TodoComponentComponent, MatProgressSpinnerModule],
   selector: 'app-root',
   template: `
-  @if (this.factory.isLoading) 
+  @if (this.factory.globalLoading()) 
     {
       <mat-spinner id="spinner"></mat-spinner>
     }
-  <ul [class.disabled]="this.factory.isLoading">
+  <ul>
     @for (todo of todos(); track todo[1].id) {
         <app-todo-item [todo]="todo[1]"></app-todo-item>
     }
   </ul>
   `,
   styles: [
-    '#spinner { position: fixed; }',
-    '.disabled { opacity: 0.5; background: #CCC; pointer-events: none; }'
+    '#spinner { position: fixed; }'
   ],
 })
 export class AppComponent implements OnInit {
