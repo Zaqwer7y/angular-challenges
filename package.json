@@ -90,6 +90,7 @@
     "jsonc-eslint-parser": "^2.1.0",
     "lint-staged": "^13.0.3",
     "ng-packagr": "20.0.1",
+    "ngx-spec": "^2.1.6",
     "nx": "^21.2.1",
     "postcss": "^8.4.5",
     "postcss-import": "~14.1.0",
