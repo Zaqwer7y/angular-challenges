@@ -20,7 +20,7 @@ export class HttpService {
     return this.http
           .put<Todo>(
             `https://jsonplaceholder.typicode.com/todos/${todo.id}`,
-            JSON.stringify({todo: todo.id, title: randText(), userId: todo.userId}),
+            JSON.stringify({id: todo.id, title: randText(), userId: todo.userId}),
             {
               headers: {
                 'Content-type': 'application/json; charset=UTF-8',
