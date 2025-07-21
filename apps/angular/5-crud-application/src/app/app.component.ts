@@ -1,16 +1,17 @@
-import { Component, Inject, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit} from '@angular/core';
 import { Todo } from './models/todo';
-import { HttpService } from './services/http.service';
+import { TodoFactoryService } from './services/todo-factory.service';
+import { randText } from '@ngneat/falso';
 
 @Component({
   imports: [],
   selector: 'app-root',
   template: `
   <ul>
-    @for (todo of todos; track todo.id) {
+    @for (todo of todos(); track todo[1].id) {
       <li>
-        {{ todo.title }}
-        <button (click)="update(todo)">Update</button>
+        {{ todo[1].title }}
+        <button (click)="update(todo[1])">Update</button>
       </li>
     }
   </ul>
@@ -18,18 +19,16 @@ import { HttpService } from './services/http.service';
   styles: [],
 })
 export class AppComponent implements OnInit {
-private http = inject(HttpService);
+private factory = inject(TodoFactoryService);
 
-  todos!: Todo[];
+public todos = this.factory.todos;
 
   ngOnInit(): void {
-    this.http.getTodos().subscribe(todos => this.todos = todos);
+    this.factory.initAll();
   }
 
   update(todo: Todo) {
-    this.http.update(todo)
-      .subscribe((todoUpdated: Todo) => {
-        this.todos[todoUpdated.id - 1] = { id: todoUpdated.id, userId: todoUpdated.userId, title: todoUpdated.title, isCompleted: true};
-      });
+    const newTodo: Todo = { id: todo.id, userId: todo.userId, title: randText(), isCompleted: false};
+    this.factory.update(newTodo);
   }
 }
